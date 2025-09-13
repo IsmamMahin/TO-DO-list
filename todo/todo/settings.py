@@ -55,10 +55,16 @@ ROOT_URLCONF = 'todo.urls'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_ALLOWED_TEMPLATE_PACKs = 'bootstrap5'
 
+# Login urls
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [templates],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
