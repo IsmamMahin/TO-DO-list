@@ -3,8 +3,10 @@ from .models import Task
 from .forms import TaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def task_list(request):
     status_filter = request.GET.get('status', all)
 
@@ -20,7 +22,7 @@ def task_list(request):
     completed_tasks = tasks.filter(is_completed = True)
     pending_tasks = tasks.filter(is_completed = False)
 
-    return render(request, '', {
+    return render(request, 'task_list.html', {
         'completed_tasks' : completed_tasks,
         'pending_tasks' : pending_tasks,
         'status_filter' : status_filter,
@@ -28,7 +30,7 @@ def task_list(request):
     })
 
 #task create
-
+@login_required
 def task_create(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -36,28 +38,31 @@ def task_create(request):
             task = form.save(commit=False) #Ready to save but not actually saves
             task.user = request.user
             task.save() # database e save hobe
-            return redirect('')
+            return redirect('task_list')
         else:
             form = TaskForm()
-        return render(request, '', {'form' : form})
+        return render(request, 'task_form.html', {'form' : form})
     
 # Task Detail Page
+@login_required
 def task_detail(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
-    return render(request, '', {'task' : task})
+    return render(request, 'task_detail.html', {'task' : task})
 
 # Task Delete Page
+@login_required
 def task_delete(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete
-    return redirect('')
+    return redirect('task_list')
 
-# Mark tast as completed
+# Mark task as completed
+@login_required
 def task_mark_completed(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.is_completed = True
     task.save()
-    return redirect('')
+    return redirect('task_list')
 
 # User register
 def register(request):
@@ -69,8 +74,8 @@ def register(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username = username, password = password)
             login(user)
-            return redirect('')
+            return redirect('task_list')
         else:
             form = UserCreationForm()
 
-        return render(request, '', {'form' = form})
+        return render(request, 'register.html', {'form': form})

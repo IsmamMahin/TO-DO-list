@@ -59,12 +59,12 @@ CRISPY_ALLOWED_TEMPLATE_PACKs = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/'
+LOGIN_URL = '/login/'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [templates],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
