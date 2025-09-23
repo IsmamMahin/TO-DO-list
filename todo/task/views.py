@@ -54,7 +54,7 @@ def task_detail(request, task_id):
 @login_required
 def task_delete(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
-    task.delete
+    task.delete()
     return redirect('task_list')
 
 # Mark task as completed
