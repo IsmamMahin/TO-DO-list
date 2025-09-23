@@ -66,15 +66,32 @@ def task_mark_completed(request, task_id):
     return redirect('task_list')
 
 # User register
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password')
+#             user = authenticate(username = username, password = password)
+#             login(user)
+#             return redirect('task_list')
+#     else:
+#         form = UserCreationForm()
+
+#     return render(request, 'register.html', {'form': form})
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username = username, password = password)
-            login(user)
+            # Save the form to create the user and get the user object.
+            user = form.save()
+            
+            # Use the correct login function call, passing both request and user.
+            login(request, user)
+            
+            # Redirect to the desired page after successful registration and login.
             return redirect('task_list')
     else:
         form = UserCreationForm()
