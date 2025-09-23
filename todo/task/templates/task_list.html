@@ -8,7 +8,7 @@
         <div class="row">
             {% comment %} Status Filter {% endcomment %}
             <div class="col-md-4">
-                <select name="Status" id="form-select form-select-lg">
+                <select name="status" id="form-select form-select-lg">
                     <option value="all" {% if status_filter == 'all' %}selected{% endif %}>
                         All Tasks
                     </option>
@@ -24,7 +24,7 @@
             </div>
 
             {% comment %} Category Filter {% endcomment %}
-            <div class="col-md-4">
+            <div class="col-md-4 pb-4">
                 <select name="category" class="form-select form-select-lg">
                     <option value="all" {% if category_filter == 'all' %}selected{% endif %}>All Categories</option>
                     <option value="work" {% if category_filter == 'work' %}selected{% endif %}>Work</option>

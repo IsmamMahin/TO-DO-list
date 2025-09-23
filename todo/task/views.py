@@ -2,15 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required
 def task_list(request):
-    status_filter = request.GET.get('status', all)
+    status_filter = request.GET.get('status', 'all')
 
-    category_filter = request.GET.get('category', all)
+    category_filter = request.GET.get('category', 'all')
     tasks = Task.objects.filter(user = request.user)
 
     if status_filter != 'all':
@@ -39,9 +40,9 @@ def task_create(request):
             task.user = request.user
             task.save() # database e save hobe
             return redirect('task_list')
-        else:
+    else:
             form = TaskForm()
-        return render(request, 'task_form.html', {'form' : form})
+    return render(request, 'task_form.html', {'form' : form})
     
 # Task Detail Page
 @login_required
@@ -75,7 +76,7 @@ def register(request):
             user = authenticate(username = username, password = password)
             login(user)
             return redirect('task_list')
-        else:
-            form = UserCreationForm()
+    else:
+        form = UserCreationForm()
 
-        return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {'form': form})
